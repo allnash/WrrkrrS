@@ -1,0 +1,793 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# home page
+### NoDocs ###
+GET          /                                                                   controllers.Application.index
+# api test page
+### NoDocs ###
+GET          /api                                                                controllers.API.index
+
+# Workspace API
+### NoDocs ###
+GET          /app/workspace                                                      controllers.API.getWorkspace
+### NoDocs ###
+POST         /app/verifyworkspace                                                controllers.API.verifyWorkspace
+
+# An example controller showing how to write asynchronous code
+### NoDocs ###
+GET          /message                                                            controllers.AsyncController.message
+
+# Session APIs
+
+###
+#  summary: Get a Current User Session (Set Cookie and Create new 1-Day Session)
+#  responses:
+#    200:
+#      schema:
+#        type: object
+###
+GET         /app/session                                                         controllers.Sessions.getSession()
+
+###
+#  summary: Remove Current User Session (Remove Cookie and Session Expiration)
+#  responses:
+#    200:
+#      schema:
+#        type: object
+###
+GET         /app/removesession                                                   controllers.Sessions.removeSession()
+
+###
+#  summary: Get Session for sessionUUID (Set Cookie and Create new 1-Day Session)
+#  responses:
+#    200:
+#      schema:
+#        type: object
+###
+GET         /app/sessions/:sessionUUID                                           controllers.Sessions.get(sessionUUID: String)
+
+###
+#  summary: Expire Session for SessionUUID (Remove Cookie and Session Expiration)
+#  responses:
+#    200:
+#      schema:
+#        type: object
+###
+GET         /app/sessions/:sessionUUID/remove                                    controllers.Sessions.remove(sessionUUID: String)
+
+### NoDocs ###
+POST        /app/sessions/:sessionUUID/updateapp                                 controllers.Sessions.updateApp(sessionUUID: String)
+
+
+# Home page
+### NoDocs ###
+POST        /app/signup                                                          controllers.Application.signup
+### NoDocs ###
+POST        /app/login                                                           controllers.Application.login
+### NoDocs ###
+GET         /app/logout                                                          controllers.Application.logout
+### NoDocs ###
+GET         /app/isauthenticated                                                 controllers.Application.isAuthenticated
+
+#    summary: Confirm Account
+#    consumes:
+#       - application/json
+#    produces:
+#       - application/json
+#    parameters:
+#       - name: body
+#         in: body
+#         schema:
+#           type: object
+#           properties:
+#             email:
+#               type: string
+#               required: true
+#             confirmation_hash:
+#               type: string
+#               required: true
+#             new_password:
+#               type: string
+#               required: true
+#             confirm_password:
+#               type: string
+#               required: true
+###
+POST        /app/confirmaccount                                                   controllers.Application.confirmAccount()
+
+###
+#    summary: Request Reset Password Email
+#    consumes:
+#       - application/json
+#    produces:
+#       - application/json
+#    parameters:
+#       - name: body
+#         in: body
+#         schema:
+#           type: object
+#           properties:
+#             email:
+#               type: string
+#               required: true
+###
+POST        /app/requestresetpassword                                            controllers.Application.requestResetPassword()
+
+### NoDocs ###
+#    summary: Reset Password
+#    consumes:
+#       - application/json
+#    produces:
+#       - application/json
+#    parameters:
+#       - name: body
+#         in: body
+#         schema:
+#           type: object
+#           properties:
+#             email:
+#               type: string
+#               required: true
+#             reset_token:
+#               type: string
+#               required: true
+#             new_password:
+#               type: string
+#               required: true
+#             confirm_new_password:
+#               type: string
+#               required: true
+###
+POST        /app/resetpassword                                                   controllers.Application.postResetPassword()
+
+# Users
+###
+#  summary: Get a Current User from Session
+#  responses:
+#    200:
+#      schema:
+#        type: object
+###
+GET         /app/user                                                           controllers.Users.getUser
+
+###
+#  summary: Get a Two Factor Bar Code String
+#  responses:
+#    200:
+#      schema:
+#        type: object
+###
+GET         /app/user/twofactorbarcode                                          controllers.Users.getUserTwoFactorBarCode
+
+###
+#    summary: Update User (The user is identified using Session Cookie)
+#    consumes:
+#       - application/json
+#    produces:
+#       - application/json
+#    parameters:
+#       - name: body
+#         in: body
+#         schema:
+#           type: object
+#           properties:
+#             first_name:
+#               type: string
+#               required: true
+#             last_name:
+#               type: string
+#               required: true
+#             email:
+#               type: string
+#               required: true
+#             city:
+#               type: string
+#               required: false
+#             state:
+#               type: string
+#               required: false
+###
+PUT        /app/user                                                             controllers.Users.updateUser
+
+###
+#  summary: Get all users in your organization.
+#  responses:
+#    200:
+#      schema:
+#        type: object
+###
+GET         /app/users                                                           controllers.Users.getUsers(organization_id ?= null)
+
+###
+#  summary: Get all users.
+#  responses:
+#    200:
+#      schema:
+#        type: object
+###
+GET         /app/all_users                                                       controllers.Users.getAllUsers
+
+###
+#  summary: Get an User with specified Id
+#  responses:
+#    200:
+#      schema:
+#        type: object
+###
+GET         /app/users/:id                                                       controllers.Users.get(id: String)
+
+###
+#  summary: Get User Profile Report
+#  responses:
+#    200:
+#      schema:
+#        type: object
+###
+GET         /app/users/:id/profile_report                                        controllers.Users.getUserProfileReport(id: String)
+
+### NoDocs ###
+PUT         /app/users/:id                                                       controllers.Users.put(id: String)
+
+###
+#    summary: Create a new User
+#    consumes:
+#       - application/json
+#    produces:
+#       - application/json
+#    parameters:
+#       - name: body
+#         in: body
+#         schema:
+#           type: object
+#           properties:
+#             first_name:
+#               type: string
+#               required: true
+#             last_name:
+#               type: string
+#               required: true
+#             email:
+#               type: string
+#               required: true
+#             organization_name:
+#               type: string
+#               required: false
+#             city:
+#               type: string
+#               required: false
+#             state:
+#               type: string
+#               required: false
+###
+POST        /app/users                                                           controllers.Users.post()
+
+### NoDocs ###
+POST        /app/organizations/:id/invite_user                                    controllers.Organizations.postInviteUser(id: String)
+
+### NoDocs ###
+POST        /app/users/:id/profile_image                                         controllers.Users.postProfileImage(id: String)
+
+# User : Two Factor
+### NoDocs ###
+POST        /app/users/:id/setuptwofactor                                        controllers.Users.postSetupTwoFactor(id: String)
+### NoDocs ###
+POST        /app/users/:id/verifytwofactor                                       controllers.Users.postVerifyTwoFactor(id: String)
+
+
+
+# User Vulnerabilities
+### NoDocs ###
+GET         /app/messages                                                        controllers.Messages.getAll()
+### NoDocs ###
+GET         /app/messages/:id                                                    controllers.Messages.get(id: String)
+### NoDocs ###
+POST        /app/messages                                                        controllers.Messages.post()
+### NoDocs ###
+PUT         /app/messages/:id                                                    controllers.Messages.put(id: String)
+### NoDocs ###
+PUT         /app/messages/:id/read                                               controllers.Messages.putRead(id: String)
+### NoDocs ###
+PUT         /app/messages/:id/starred                                            controllers.Messages.putStarred(id: String)
+
+# System Products
+### NoDocs ###
+GET         /app/products                                                        controllers.Products.getAll()
+### NoDocs ###
+GET         /app/products/:id                                                    controllers.Products.get(id: String)
+### NoDocs ###
+POST        /app/products                                                        controllers.Products.post()
+### NoDocs ###
+PUT         /app/products/:id                                                    controllers.Products.put(id: String)
+
+# System Product Releases
+### NoDocs ###
+GET         /app/products/:productId/releases                                    controllers.ProductReleases.getAll(productId: String)
+### NoDocs ###
+GET         /app/products/:productId/releases/:releaseId                         controllers.ProductReleases.get(productId: String, releaseId: String)
+### NoDocs ###
+GET         /app/products/:productId/releases/:releaseId/upgrade                 controllers.ProductReleases.getUpgrade(productId: String, releaseId: String)
+### NoDocs ###
+POST        /app/products/:productId/releases                                    controllers.ProductReleases.post(productId: String)
+### NoDocs ###
+PUT         /app/products/:productId/releases/:releaseId                         controllers.ProductReleases.put(productId: String, releaseId: String)
+### NoDocs ###
+POST        /app/products/:productId/releases/:releaseId/uploads                 controllers.ProductReleases.postUploads(productId: String, releaseId: String)
+
+
+
+# Marketplace Products Tags
+### NoDocs ###
+GET         /app/tags                                                           controllers.Tags.getAll(query ?= null)
+
+# Organizations
+
+###
+#    summary: Create a new Organization
+#    consumes:
+#       - application/json
+#    produces:
+#       - application/json
+#    parameters:
+#       - name: body
+#         in: body
+#         schema:
+#           type: object
+#           properties:
+#             name:
+#               type: string
+#               required: true
+#             email_domain:
+#               type: string
+#               required: true
+###
+POST        /app/organizations                                                   controllers.Organizations.post
+
+### NoDocs ###
+PUT         /app/organizations/:id                                               controllers.Organizations.put(id: String)
+
+###
+#  summary: Get all organizations
+#  responses:
+#    200:
+#      schema:
+#        type: object
+###
+GET        /app/all_organizations                                                controllers.Organizations.getAllOrganizations
+
+###
+#  summary: Get an orgaization with specified Id
+#  responses:
+#    200:
+#      schema:
+#        type: object
+###
+GET        /app/organizations/:id                                                controllers.Organizations.get(id: String)
+
+### NoDocs ###
+GET        /app/organizations/:id/license                                        controllers.Licenses.get(id: String)
+
+# Licenses
+### NoDocs ###
+GET         /app/licenses                                                        controllers.Licenses.getAll()
+
+# Organization Roles
+### NoDocs ###
+GET         /app/roles                                                           controllers.Roles.getAll(organization_id ?= null)
+
+### NoDocs ###
+GET         /app/organizations/:organization_id/roles/:role_id                   controllers.Roles.get(organization_id: String, role_id: String)
+
+### NoDocs ###
+PUT         /app/organizations/:organization_id/roles/:role_id                   controllers.Roles.put(organization_id: String, role_id: String)
+
+### NoDocs ###
+POST        /app/organizations/:organization_id/roles                            controllers.Roles.post(organization_id: String)
+
+# Surveys
+### NoDocs ###
+POST        /app/surveys                                                         controllers.Surveys.post
+
+# Projects
+
+###
+#  summary: Get project.
+#  responses:
+#    200:
+#      schema:
+#        type: object
+###
+GET         /app/projects/:id                                                   controllers.Projects.get(id :String)
+
+
+###
+#    summary: Create a new Project
+#    consumes:
+#       - application/json
+#    produces:
+#       - application/json
+#    parameters:
+#       - name: body
+#         in: body
+#         schema:
+#           type: object
+#           properties:
+#             name:
+#               type: string
+#               required: true
+#             description:
+#               type: string
+#               required: true
+#             type:
+#               type: string
+#               required: true
+#             status:
+#               type: string
+#               required: true
+#             priority:
+#               type: string
+#               required: true
+#             tags:
+#               type: array
+#               required: true
+###
+POST        /app/projects                                                        controllers.Projects.post(organization_id ?= null)
+
+###
+#    summary: Create a new Project
+#    consumes:
+#       - application/json
+#    produces:
+#       - application/json
+#    parameters:
+#       - name: body
+#         in: body
+#         schema:
+#           type: object
+#           properties:
+#             name:
+#               type: string
+#               required: true
+#             description:
+#               type: string
+#               required: true
+#             type:
+#               type: string
+#               required: true
+#             status:
+#               type: string
+#               required: true
+#             tota_budget:
+#               type: float
+#               required: true
+#             total_budgeted_hours:
+#               type: float
+#               required: true
+#             priority:
+#               type: string
+#               required: true
+#             tags:
+#               type: array
+#               required: true
+###
+PUT        /app/projects/:project_id                                             controllers.Projects.put(project_id: String)
+
+###
+#    summary: Update Tasks status
+#    consumes:
+#       - application/json
+#    produces:
+#       - application/json
+#    parameters:
+#       - name: body
+#         in: body
+#         schema:
+#           type: object
+#           properties:
+#             status:
+#               type: string
+#               required: true
+###
+PUT         /app/projects/:projectId/update_status                                controllers.Projects.putProjectStatus(projectId: String)
+
+###
+#  summary: Get all projects in your organization.
+#  responses:
+#    200:
+#      schema:
+#        type: object
+###
+GET         /app/projects                                                        controllers.Projects.getProjects(query ?= null, organization_id ?= null)
+
+###
+#  summary: Delete a participant from the project.
+#  responses:
+#    200:
+#      schema:
+#        type: object
+###
+DELETE      /app/projects/:project_id/participants/:user_id                      controllers.Projects.removeParticipant(project_id: String, user_id: String)
+
+###
+#  summary: Put a participant on the project.
+#  responses:
+#    200:
+#      schema:
+#        type: object
+###
+PUT        /app/projects/:project_id/participants/:user_id                       controllers.Projects.putParticipant(project_id: String, user_id: String)
+
+###
+#  summary: Get all project priorities in your organization.
+#  responses:
+#    200:
+#      schema:
+#        type: object
+###
+GET         /app/project/priorities                                              controllers.Projects.getProjectPriorities(organization_id ?= null)
+
+###
+#  summary: Get all project types in your organization.
+#  responses:
+#    200:
+#      schema:
+#        type: object
+###
+GET         /app/project/types                                                   controllers.Projects.getProjectTypes(organization_id ?= null)
+
+###
+#  summary: Get all project statuses in your organization.
+#  responses:
+#    200:
+#      schema:
+#        type: object
+###
+GET         /app/project/statuses                                                controllers.Projects.getProjectStatuses(organization_id ?= null)
+
+### NoDocs ###
+GET         /app/project/tags                                                    controllers.Projects.getProjectTags(query ?= null, organization_id ?= null)
+
+###
+#  summary: Get all task priorities in your organization.
+#  responses:
+#    200:
+#      schema:
+#        type: object
+###
+GET         /app/task/priorities                                                 controllers.Projects.getTaskPriorities(organization_id ?= null)
+
+###
+#  summary: Get all task types in your organization.
+#  responses:
+#    200:
+#      schema:
+#        type: object
+###
+GET         /app/task/types                                                      controllers.Projects.getTaskTypes(organization_id ?= null)
+
+###
+#  summary: Get all task statuses in your organization.
+#  responses:
+#    200:
+#      schema:
+#        type: object
+###
+GET         /app/task/statuses                                                   controllers.Projects.getTaskStatuses(organization_id ?= null)
+
+###
+#  summary: Get Project Task
+#  responses:
+#    200:
+#      schema:
+#        type: object
+###
+GET         /app/projects/:project_id/tasks/:task_id                             controllers.Projects.getProjectTask(project_id: String, task_id: String)
+
+###
+#    summary: Create a new Organization
+#    consumes:
+#       - application/json
+#    produces:
+#       - application/json
+#    parameters:
+#       - name: body
+#         in: body
+#         schema:
+#           type: object
+#           properties:
+#             name:
+#               type: string
+#               required: true
+#             description:
+#               type: string
+#               required: true
+#             type:
+#               type: string
+#               required: true
+#             status:
+#               type: string
+#               required: true
+#             priority:
+#               type: string
+#               required: true
+#             budgeted_hours:
+#               type: double
+#               required: true
+#             participants:
+#               type: array
+#               required: true
+###
+POST        /app/projects/:projectId/tasks                                       controllers.Projects.postTask(projectId: String, organization_id ?= null)
+
+### NoDocs ###
+PUT         /app/projects/:project_id/tasks/:task_id                             controllers.Projects.putProjectTask(project_id: String, task_id: String)
+
+### NoDocs ###
+POST        /app/projects/:project_id/tasks/:task_id/operations                  controllers.Projects.postProjectTaskOperation(project_id: String, task_id: String)
+
+###
+#    summary: Update Tasks status
+#    consumes:
+#       - application/json
+#    produces:
+#       - application/json
+#    parameters:
+#       - name: body
+#         in: body
+#         schema:
+#           type: object
+#           properties:
+#             status:
+#               type: string
+#               required: true
+#             tasks:
+#               type: array
+#               required: true
+###
+PUT         /app/projects/:projectId/update_tasks                                controllers.Projects.updateTasksStatus(projectId: String)
+
+# Devices
+### NoDocs ###
+GET        /app/user/devices                                                     controllers.Devices.getCurrentUserDevices()
+### NoDocs ###
+GET        /app/organizations/:organization_id/devices                           controllers.Devices.getOrganizationDevices(organization_id: String)
+### NoDocs ###
+GET        /app/organizations/:organization_id/reader_devices                    controllers.Devices.getOrganizationReaderDevices(organization_id: String)
+### NoDocs ###
+POST       /app/devices                                                          controllers.Devices.post()
+### NoDocs ###
+POST       /app/adddevice                                                        controllers.Devices.addDevice()
+### NoDocs ###
+GET        /app/devices/:device_id/heartbeat                                     controllers.Devices.getHeartbeat(device_id: String)
+### NoDocs ###
+GET        /app/devices/:device_id/heartbeats                                    controllers.Devices.getHeartbeats(device_id: String)
+### NoDocs ###
+POST       /app/devices/:device_id/heartbeat                                     controllers.Devices.postHeartbeat(device_id: String)
+### NoDocs ###
+GET        /app/devices/:device_id                                               controllers.Devices.get(device_id: String)
+### NoDocs ###
+GET        /app/devices/:device_id/info                                          controllers.Devices.getDeviceInfo(device_id: String)
+### NoDocs ###
+GET        /app/devices/:device_id/device_state                                  controllers.Devices.getDeviceState(device_id: String)
+### NoDocs ###
+GET        /app/devices/:device_id/device_states                                 controllers.Devices.getDeviceStates(device_id: String)
+### NoDocs ###
+GET        /app/devices/:device_id/device_type                                   controllers.Devices.getDeviceType(device_id: String)
+
+# Device types
+### NoDocs ###
+GET        /app/organizations/:organization_id/device_types                      controllers.DeviceTypes.getOrganizationDeviceTypes(organization_id: String)
+### NoDocs ###
+GET        /app/device_types/:device_type_id                                     controllers.DeviceTypes.get(device_type_id: String)
+### NoDocs ###
+GET        /app/device_types/:device_type_id/device_type_properties              controllers.DeviceTypes.getDeviceTypeProperties(device_type_id: String)
+### NoDocs ###
+POST        /app/device_types                                                    controllers.DeviceTypes.post(organization_id ?= null)
+### NoDocs ###
+PUT         /app/device_types/:id                                                controllers.DeviceTypes.put(id: String)
+### NoDocs ###
+PUT         /app/device_types/:id/device_type_html                               controllers.DeviceTypes.putDeviceTypeHtml(id: String)
+
+# Floors
+### NoDocs ###
+# GET       /app/user/floors                                                     controllers.Floors.getCurrentUserFloors()
+### NoDocs ###
+GET        /app/organizations/:organization_id/floors                            controllers.Floors.getOrganizationFloors(organization_id: String)
+### NoDocs ###
+POST       /app/floors                                                           controllers.Floors.post(organization_id ?= null)
+### NoDocs ###
+GET        /app/floors/:floor_id                                                 controllers.Floors.get(floor_id: String)
+### NoDocs ###
+GET        /app/floors/:floor_id/zones                                           controllers.Floors.getFloorZones(floor_id: String)
+### NoDocs ###
+PUT        /app/floors/:floor_id/zones                                           controllers.Floors.putFloorZones(floor_id: String)
+### NoDocs ###
+GET        /app/floors/:floor_id/sensors                                         controllers.Floors.getFloorSensors(floor_id: String)
+### NoDocs ###
+PUT        /app/floors/:floor_id/sensors                                         controllers.Floors.putFloorSensors(floor_id: String)
+
+# Shifts Report
+### NoDocs ###
+GET        /app/shift_report                                                     controllers.Shifts.getShiftReport()
+
+# Visits / Visits Report
+### NoDocs ###
+GET        /app/visits                                                           controllers.Visits.getVisits()
+
+### NoDocs ###
+### DO NOT USE THIS API
+GET        /app/reader_visit_reports/:readerDeviceId                             controllers.Visits.getDailyReaderVisitReports(readerDeviceId: String)
+
+### NoDocs ###
+GET        /app/reader_hourly_visitor_counts_daily_report/:readerDeviceId        controllers.Visits.getDailyReaderHourlyVisitorCounts(readerDeviceId: String, date ?= null)
+
+### NoDocs ###
+GET        /app/reader_weekly_visitor_report/:readerDeviceId                     controllers.Visits.getWeeklyVisitorCounts(readerDeviceId: String, date ?= null)
+
+### NoDocs ###
+GET        /app/seven_day_visitor_report/:readerDeviceId                         controllers.Visits.getLastSevenDaysVisitorCounts(readerDeviceId: String)
+
+### NoDocs ###
+GET        /app/month_to_date_visitor_report/:readerDeviceId                     controllers.Visits.getMonthToDateVisitorCounts(readerDeviceId: String)
+
+# Visits
+### NoDocs ###
+POST       /app/reader_visits                                                    controllers.Visits.postReaderVisits()
+
+# Sightings
+### NoDocs ###
+# GET        /app/organizations/:organization_id/sightings                       controllers.Sightings.getOrganizationSightings(organization_id: String)
+### NoDocs ###
+POST       /app/sightings                                                        controllers.Sightings.post()
+
+
+# Visits Reports
+### NoDocs ###
+POST       /app/reader_visit_reports                                              controllers.Visits.postReaderVisitReports()
+
+##  SPECIAL DIAGNOSTIC API(s)
+#   PLEASE DISABLE THEM AFTER USE.
+#   THESE WILL NOT WORK IN PRODUCTION. DONT BOTHER TRYING
+#
+#   - NASH
+
+### NoDocs ###
+POST       /api/signin                                                           controllers.Mobile.signin()
+POST       /api/signup                                                           controllers.Mobile.signup()
+GET        /api/sessions/:id/invalidate                                          controllers.Mobile.invalidateSession(id: String)
+GET        /api/sessions/:id/validate                                            controllers.Mobile.validateSession(id: String)
+
+
+### NoDocs ###
+GET        /api/devices                                                          controllers.Devices.getDevices()
+GET        /api/floors                                                           controllers.Floors.getFloors()
+GET        /api/floors/:id/zones                                                 controllers.Floors.getZones(id: String)
+GET        /api/floors/:id/sensors                                               controllers.Floors.getSensors(id: String)
+
+###
+#    summary: Send a User Shift Event from a Mobile App to the server.
+#    consumes:
+#       - application/json
+#    produces:
+#       - application/json
+#    parameters:
+#       - name: body
+#         in: body
+#         schema:
+#           type: object
+#           properties:
+#             session_id:
+#               type: string
+#               required: false
+#             device_id:
+#               type: string
+#               required: false
+#             shift_data:
+#               type: object
+###
+POST        /api/user/shifts                                                     controllers.Shifts.event()
+
+# Map static resources from the /public folder to the /assets URL path
+### NoDocs ###
+GET         /*file                                                               controllers.Assets.versioned(path="/public", file)

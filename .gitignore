@@ -1,0 +1,33 @@
+logs
+target
+.DS_Store
+/.idea
+/.idea_modules
+/.classpath
+/.project
+/.settings
+/RUNNING_PID
+project/target/
+
+# Development files
+*.class
+*.log
+*.iml
+application.conf
+node_modules
+target
+builds
+.DS_Store
+logs
+.idea/
+.gradle/
+
+# Configuration files
+conf/application.conf
+conf/application.conf.production
+conf/application.conf.production_debug
+conf/logback.xml
+conf/logback.xml.production
+mysql/
+vendor/
+public/

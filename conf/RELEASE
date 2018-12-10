@@ -1,0 +1,48 @@
+-----
+v0.0.8 (RELEASED)
+- Feature(s)
+ - Fix release notes template
+ - Fix report bindings
+- Released by gadre@omegatrace.com
+
+v0.0.7 (RELEASED)
+- Feature(s)
+ - Fix Google ReCaptcha Issue
+- Released by gadre@omegatrace.com
+
+v0.0.6 (RELEASED)
+- Feature(s)
+ - Visitor Dashboard concept
+ - Visitor API
+ - Visitor Reports
+- Released by gadre@omegatrace.com
+
+v0.0.5 (RELEASED)
+- Feature(s)
+  - Activities API
+  - Mobile App API
+  - Misc Fixes
+- Released by gadre@omegatrace.com
+
+v0.0.4 (RELEASED)
+- Feature(s)
+  - Dashboard module
+  - User profile metrics
+  - Members module
+  - Team module
+- Released by gadre@omegatrace.com
+
+
+v0.0.3 (RELEASED)
+- Features(s)
+ - Projects module.
+- Released by gadre@omegatrace.com
+
+
+v0.0.1 (RELEASED)
+- Features(s)
+  - Authentication
+    https://github.com/omegatrace/engage_features/blob/master/Users/Authentication/FEATURE.md
+  - Roles
+    https://github.com/omegatrace/engage_features/blob/master/Users/RoleBasedAccess/FEATURE.md
+- Released by gadre@omegatrace.com
