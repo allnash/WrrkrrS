@@ -20,6 +20,8 @@ builds
 .DS_Store
 logs
 .idea/
+deploy.sh
+aws_production.sh
 .gradle/
 
 # Configuration files
